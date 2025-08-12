@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* Pokemon Font Imports */
+@font-face {
+  font-family: 'Pokemon Hollow';
+  src: url('./font/Pokemon\ Hollow.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pokemon Solid';
+  src: url('./font/Pokemon Solid.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Pokemon Font Utility Classes */
+.font-pokemon-hollow {
+  font-family: 'Pokemon Hollow', 'Arial', sans-serif;
+}
+
+.font-pokemon-solid {
+  font-family: 'Pokemon Solid', 'Arial', sans-serif;
+}
+
+
+/* Global Pokemon Theme Styles */
+:root {
+  --pokemon-yellow: #FFCB05;
+  --pokemon-blue: #3B82F6;
+  --pokemon-red: #EF4444;
+}
+
+/* Apply Pokemon font to headings by default */
+h1, h2, h3 {
+  font-family: 'Pokemon Hollow', 'Arial', sans-serif;
+  letter-spacing: 0.05em;
+}
