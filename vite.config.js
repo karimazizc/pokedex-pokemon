@@ -6,7 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base:'/pokedex-pokemon/',
+  base: process.env.NODE_ENV === 'production' ? '/pokedex-pokemon/' : '/',
   plugins: [
     vue(),
     vueDevTools(),

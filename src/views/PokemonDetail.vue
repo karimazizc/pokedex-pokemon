@@ -850,7 +850,7 @@ const getTypeTextColor = (type) => {
  * @returns {string} Icon file path
  */
 const getTypeIconPath = (type) => {
-  return `/icons/${type}.svg`
+  return `${import.meta.env.BASE_URL}icons/${type}.svg`
 }
 
 /**

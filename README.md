@@ -64,7 +64,6 @@ The application will be available at `http://localhost:5173` (or another port if
    - Click on the front side of any card to view detailed information
    - Hover over the card to reveal a flip button to flip the card
    - Click the top of the backside of the card to flip back to the front
-   
 2. **Pokemon Detail View**:
    - View comprehensive Pokemon information including stats, moves, abilities
    - See different sprite angles (front, back, shiny variants)
@@ -142,6 +141,38 @@ npm run test:e2e -- --debug
 npm run lint
 ```
 
+## Deployment
+
+### GitHub Pages Deployment
+
+This app is configured for GitHub Pages deployment:
+
+1. **Build the project:**
+
+   ```sh
+   npm run build
+   ```
+
+2. **Deploy to GitHub Pages:**
+   - Push your changes to the `main` branch
+   - The `dist` folder contains the built files
+   - Enable GitHub Pages in your repository settings
+   - Set the source to "Deploy from a branch" and select the branch containing your `dist` folder
+
+3. **Important Notes:**
+   - The app is configured with the correct base path for GitHub Pages
+   - Icons and assets use relative paths that work with subdirectories
+   - Client-side routing is handled with a 404.html redirect system
+   - The Vite config automatically sets the correct base URL for production builds
+
+### Manual Deployment
+
+To deploy to other static hosting services:
+
+1. Run `npm run build`
+2. Upload the contents of the `dist` folder to your hosting service
+3. Configure your hosting to serve `index.html` for all routes (for SPA support)
+
 ## Project Structure
 
 ```
@@ -168,7 +199,6 @@ public/
 ├── favicon.ico         # Change to pokeball favicon
 └── pokemonCard.png     # Real Backside PokemonCard design (for inspiration)
 ```
-
 
 ## API Integration
 

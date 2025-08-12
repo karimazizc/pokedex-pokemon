@@ -4,7 +4,7 @@
     <div class="row justify-content-center mb-10">
       <div class="col-md-8 col-lg-6">
         <div class="text-center bg-gray-900">
-          <router-link>
+          <router-link to="/">
             <h1 class="pokemon-explorer text-4xl mb-3 text-yellow-200">Pokémon Explorer</h1>
           </router-link>
           <div class="input-group max-w-full text-center bg-gray-900 p-5">
@@ -438,7 +438,7 @@ const getTypeBackgroundColor = (type, variant = 'normal') => {
  * @returns {string} Icon file path
  */
 const getTypeIconPath = (type) => {
-  return `/icons/${type}.svg`
+  return `${import.meta.env.BASE_URL}icons/${type}.svg`
 }
 
 /**
