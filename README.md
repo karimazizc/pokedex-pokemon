@@ -192,10 +192,6 @@ The app fetches Pokemon data from the [PokeAPI](https://pokeapi.co/):
 - Check the console for any API or state management errors
 - The app includes loading states for better user experience
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
 ## Configuration
 
 See [Vite Configuration Reference](https://vite.dev/config/) for advanced configuration options.
