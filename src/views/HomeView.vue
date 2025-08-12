@@ -8,13 +8,13 @@
             <h1 class="pokemon-explorer text-4xl mb-3 text-yellow-200">Pokémon Explorer</h1>
           </router-link>
           <div class="input-group max-w-full text-center bg-gray-900 p-5">
-            <input 
-              type="text" 
+            <input
+              type="text"
               class="form-control form-control-lg bg-gray-700 w-[50%] p-3 text-white rounded-2xl border-0"
               placeholder="Search Pokémon..."
               v-model="searchQuery"
               @input="handleSearch"
-            >
+            />
           </div>
         </div>
       </div>
@@ -35,47 +35,54 @@
         <div class="alert alert-danger" role="alert">
           <h4 class="alert-heading">Error!</h4>
           <p>{{ error }}</p>
-          <button @click="retryFetch" class="btn btn-outline-danger">
-            Try Again
-          </button>
+          <button @click="retryFetch" class="btn btn-outline-danger">Try Again</button>
         </div>
       </div>
     </div>
 
     <!-- Pokemon Grid -->
-    <div v-if="!loading && !error" class="grid mr-5 ml-5 gap-5 justify-center! xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
-      <div 
-        v-for="pokemon in filteredPokemon" 
-        :key="pokemon.id"
-        class="mb-4"
-      >
-        <div 
-          class="card pokemon-card h-100 flip-card" 
-          :class="{ 'flipped': isCardFlipped(pokemon.id) }"
+    <div
+      v-if="!loading && !error"
+      class="grid mr-5 ml-5 gap-5 justify-center! 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2"
+    >
+      <div v-for="pokemon in filteredPokemon" :key="pokemon.id" class="mb-4">
+        <div
+          class="card pokemon-card h-100 flip-card"
+          :class="{ flipped: isCardFlipped(pokemon.id) }"
         >
           <!-- Front Side of Card -->
           <div class="flip-card-inner">
-            <div class="flip-card-front"
-              :style="{ 
-                borderColor: getTypeColor(pokemon.types[0]), 
+            <div
+              class="flip-card-front"
+              :style="{
+                borderColor: getTypeColor(pokemon.types[0]),
                 borderWidth: '5px',
                 borderStyle: 'solid',
-                borderRadius: '10px'
+                borderRadius: '10px',
               }"
             >
-              <div class="d-flex flex-column justify-content-center position-relative h-[200px] rounded-xl" :style="{ backgroundColor: getTypeBackgroundColor(pokemon.types[0], 'dark') }" @click="handleCardClick(pokemon)">
+              <div
+                class="d-flex flex-column justify-content-center position-relative h-[200px] rounded-xl"
+                :style="{ backgroundColor: getTypeBackgroundColor(pokemon.types[0], 'dark') }"
+                @click="handleCardClick(pokemon)"
+              >
                 <!-- Top row with ID and Type badges -->
-                <div class="flex justify-between align-items-start position-absolute" style="top: 0.75rem; left: 0.75rem; right: 0.75rem; z-index: 10;">
-                  <p class="p-1  rounded-xl text-xs text-white">#{{ String(pokemon.id).padStart(3, '0') }}</p>
+                <div
+                  class="flex justify-between align-items-start position-absolute"
+                  style="top: 0.75rem; left: 0.75rem; right: 0.75rem; z-index: 10"
+                >
+                  <p class="p-1 rounded-xl text-xs text-white">
+                    #{{ String(pokemon.id).padStart(3, '0') }}
+                  </p>
                   <div class="type-badges-top">
-                    <span 
-                      v-for="type in pokemon.types" 
+                    <span
+                      v-for="type in pokemon.types"
                       :key="type"
                       class="type-badge-icon"
                       :style="{ backgroundColor: getTypeColor(type) }"
                       :title="type.charAt(0).toUpperCase() + type.slice(1)"
                     >
-                      <img 
+                      <img
                         :src="getTypeIconPath(type)"
                         :alt="type"
                         class="type-icon-only"
@@ -84,32 +91,38 @@
                     </span>
                   </div>
                 </div>
-                
+
                 <!-- Pokemon Image centered -->
                 <div class="pokemon-image-wrapper">
-                  <img 
-                    :src="pokemon.image" 
+                  <img
+                    :src="pokemon.image"
                     :alt="pokemon.name"
                     class="img-fluid pokemon-image"
-                    style="max-height: 100%; object-fit: contain;"
+                    style="max-height: 100%; object-fit: contain"
                     @error="handleImageError"
-                  >
+                  />
                 </div>
               </div>
-              <div class="card-body" :style="{ backgroundColor: getTypeBackgroundColor(pokemon.types[0], 'light') }" @click="handleCardClick(pokemon)">
+              <div
+                class="card-body"
+                :style="{ backgroundColor: getTypeBackgroundColor(pokemon.types[0], 'light') }"
+                @click="handleCardClick(pokemon)"
+              >
                 <!-- Pokemon Name -->
                 <div class="mb-2">
-                  <h5 class="card-title text-center font-pokemon-solid capitalize">{{ pokemon.name }}</h5>
+                  <h5 class="card-title text-center font-pokemon-solid capitalize">
+                    {{ pokemon.name }}
+                  </h5>
                 </div>
-                
+
                 <!-- HP Bar -->
                 <div class="hp-bar-container mb-3">
                   <div class="hp-bar-background">
-                    <div 
-                      class="hp-bar-fill" 
-                      :style="{ 
+                    <div
+                      class="hp-bar-fill"
+                      :style="{
                         width: `${Math.min((pokemon.stats.hp / 255) * 100, 100)}%`,
-                        backgroundColor: getHPBarColor(pokemon.stats.hp)
+                        backgroundColor: getHPBarColor(pokemon.stats.hp),
                       }"
                     ></div>
                   </div>
@@ -134,28 +147,31 @@
                     <span class="stat-value">{{ pokemon.stats.speed }}</span>
                   </div>
                 </div>
-                
+
                 <!-- Pokemon Details -->
                 <div class="small text-xs flex flex-row gap-3 text-center justify-center mt-2">
                   <div>
-                    <p class="stat-label-hw">Height</p> 
+                    <p class="stat-label-hw">Height</p>
                     <span class="text-white">{{ formatHeight(pokemon.height) }}</span>
                   </div>
                   <div>
-                    <p class="stat-label-hw">Weight</p> 
+                    <p class="stat-label-hw">Weight</p>
                     <span class="text-white">{{ formatWeight(pokemon.weight) }}</span>
                   </div>
                 </div>
-                
+
                 <!-- Edit Badge -->
-                <div v-if="pokemon.isEdited" class="mb-2">
-                  <span class="badge bg-warning text-white">Edited</span>
+                <div v-if="pokemon.isEdited" class="absolute bottom-1 ml-2">
+                  <span class="badge bg-warning text-white italic">(Edited)</span>
                 </div>
               </div>
             </div>
 
             <!-- Back Side of Card -->
-            <div class="flip-card-back flex items-center justify-center bg-gray-100" @click="handleFlipBack(pokemon, $event)">
+            <div
+              class="flip-card-back flex items-center justify-center bg-gray-100"
+              @click="handleFlipBack(pokemon, $event)"
+            >
               <div class="pokemon-card" @click="handleFlipBack(pokemon, $event)">
                 <!-- Card Border -->
                 <div class="card-border" @click="handleFlipBack(pokemon, $event)">
@@ -165,7 +181,7 @@
                     <div class="pokemon-logo-top">
                       <span class="pokemon-text">Pokémon</span>
                     </div>
-                    
+
                     <!-- Central Pokeball Area -->
                     <div class="pokeball-container" @click="handleFlipBack(pokemon, $event)">
                       <div class="energy-swirl">
@@ -185,10 +201,12 @@
                         <div class="pokeball-bottom"></div>
                       </div>
                     </div>
-                    
+
                     <!-- Bottom Pokemon Logo (upside down) -->
-                    <div class="pokemon-logo-bottom" >
-                      <span class="pokemon-text-bottom" @click="handleFlipBack(pokemon, $event)">Pokémon</span>
+                    <div class="pokemon-logo-bottom">
+                      <span class="pokemon-text-bottom" @click="handleFlipBack(pokemon, $event)"
+                        >Pokémon</span
+                      >
                     </div>
                   </div>
                 </div>
@@ -198,14 +216,14 @@
 
           <!-- Flip Card Button (appears on hover, only on front) -->
           <div class="flip-card-button-container" v-show="!isCardFlipped(pokemon.id)">
-            <button 
+            <button
               class="flip-card-button"
               @click="handleFlip(pokemon, $event)"
               @mousedown.stop
               @mouseup.stop
               title="Flip Card"
             >
-            Flip
+              Flip
             </button>
           </div>
         </div>
@@ -213,7 +231,10 @@
     </div>
 
     <!-- No Results -->
-    <div v-if="!loading && !error && filteredPokemon.length === 0" class="row justify-content-center">
+    <div
+      v-if="!loading && !error && filteredPokemon.length === 0"
+      class="row justify-content-center"
+    >
       <div class="col-md-6 text-center">
         <div class="card">
           <div class="card-body">
@@ -226,17 +247,9 @@
   </div>
 </template>
 
-/**
- * HomeView Component
- * 
- * Main view component for displaying Pokemon cards in a grid layout
- * Features:
- * - Search functionality
- * - Card flip animations (front/back side)
- * - Loading states and error handling
- * - Dynamic type-based styling
- * - Navigation to Pokemon detail view
- */
+/** * HomeView Component * * Main view component for displaying Pokemon cards in a grid layout *
+Features: * - Search functionality * - Card flip animations (front/back side) * - Loading states and
+error handling * - Dynamic type-based styling * - Navigation to Pokemon detail view */
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -252,7 +265,7 @@ const loading = computed(() => pokemonStore.loading)
 const error = computed(() => pokemonStore.error)
 const searchQuery = computed({
   get: () => pokemonStore.searchQuery,
-  set: (value) => pokemonStore.setSearchQuery(value)
+  set: (value) => pokemonStore.setSearchQuery(value),
 })
 
 // State for card flips
@@ -297,7 +310,7 @@ const handleFlip = (pokemon, event) => {
   event.preventDefault()
   event.stopPropagation()
   event.stopImmediatePropagation()
-  
+
   const cardId = pokemon.id
   const newFlippedCards = new Set(flippedCards.value)
   newFlippedCards.add(cardId)
@@ -313,7 +326,7 @@ const handleFlipBack = (pokemon, event) => {
   event.preventDefault()
   event.stopPropagation()
   event.stopImmediatePropagation()
-  
+
   const cardId = pokemon.id
   const newFlippedCards = new Set(flippedCards.value)
   newFlippedCards.delete(cardId)
@@ -380,7 +393,7 @@ const getTypeColor = (type) => {
     ice: '#98D8D8',
     dragon: '#7038F8',
     dark: '#705848',
-    fairy: '#EE99AC'
+    fairy: '#EE99AC',
   }
   return typeColors[type] || '#6C757D'
 }
@@ -394,7 +407,7 @@ const getTypeColor = (type) => {
 const getTypeBackgroundColor = (type, variant = 'normal') => {
   const baseColors = {
     normal: '#A8A878',
-    fighting: '#C03028', 
+    fighting: '#C03028',
     flying: '#ADD8E6',
     poison: '#A040A0',
     ground: '#E0C068',
@@ -410,17 +423,17 @@ const getTypeBackgroundColor = (type, variant = 'normal') => {
     ice: '#98D8D8',
     dragon: '#7038F8',
     dark: '#705848',
-    fairy: '#EE99AC'
+    fairy: '#EE99AC',
   }
-  
+
   const baseColor = baseColors[type] || '#6C757D'
-  
+
   // Convert hex to RGB
   const hex = baseColor.replace('#', '')
   const r = parseInt(hex.substr(0, 2), 16)
   const g = parseInt(hex.substr(2, 2), 16)
   const b = parseInt(hex.substr(4, 2), 16)
-  
+
   if (variant === 'dark') {
     // Darker version for image background
     return `rgba(${Math.floor(r * 0.35)}, ${Math.floor(g * 0.35)}, ${Math.floor(b * 0.35)}, 0.9)`
@@ -428,7 +441,7 @@ const getTypeBackgroundColor = (type, variant = 'normal') => {
     // Lighter version for card body
     return `rgba(${Math.floor(r * 0.65)}, ${Math.floor(g * 0.65)}, ${Math.floor(b * 0.65)}, 0.8)`
   }
-  
+
   return baseColor
 }
 
@@ -483,7 +496,6 @@ onMounted(() => {
 .pokemon-card {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: pointer;
-  overflow: visible;
   position: relative;
 }
 
@@ -506,7 +518,8 @@ onMounted(() => {
   transform: rotateY(180deg);
 }
 
-.flip-card-front, .flip-card-back {
+.flip-card-front,
+.flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -554,7 +567,7 @@ onMounted(() => {
 .stat-bar-back-container {
   flex: 1;
   height: 6px;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -563,13 +576,15 @@ onMounted(() => {
   height: 100%;
   border-radius: 3px;
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  background-image: linear-gradient(45deg, 
-    rgba(255,255,255,0.1) 25%, 
-    transparent 25%, 
-    transparent 50%, 
-    rgba(255,255,255,0.1) 50%, 
-    rgba(255,255,255,0.1) 75%, 
-    transparent 75%);
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.1) 75%,
+    transparent 75%
+  );
   background-size: 4px 4px;
 }
 
@@ -600,7 +615,7 @@ onMounted(() => {
 }
 
 .flip-card-button {
-  background: linear-gradient(135deg, #FFCB05 0%, #71a24b 100%);
+  background: linear-gradient(135deg, #ffcb05 0%, #71a24b 100%);
   color: white;
   border: none;
   padding: 0.5rem 0.75rem;
@@ -619,14 +634,14 @@ onMounted(() => {
 .flip-card-button:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(135deg, #71a24b 0%, #FFCB05 100%);
+  background: linear-gradient(135deg, #71a24b 0%, #ffcb05 100%);
 }
 
 .pokemon-card:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 
-    0 15px 35px rgba(0,0,0,0.15),
-    0 5px 15px rgba(0,0,0,0.1);
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.15),
+    0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .pokemon-card:not(.flipped):hover {
@@ -648,9 +663,7 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, 
-    rgba(255,255,255,0.2) 0%, 
-    rgba(255,255,255,0.05) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -677,18 +690,18 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
   cursor: pointer;
   position: relative;
   margin-top: 4px;
   margin-right: 4px;
-  border: 1px solid rgba(255,255,255,0.4);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .type-badge-icon:hover {
   transform: translateY(-2px) scale(1.15);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   z-index: 9999;
 }
 
@@ -699,7 +712,7 @@ onMounted(() => {
   top: -40px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 0.375rem 0.5rem;
   border-radius: 4px;
@@ -720,7 +733,7 @@ onMounted(() => {
   transform: translateX(-50%);
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid rgba(0,0,0,0.8);
+  border-top: 5px solid rgba(0, 0, 0, 0.8);
   z-index: 99999;
   pointer-events: none;
   animation: tooltipFadeIn 0.2s ease;
@@ -746,21 +759,21 @@ onMounted(() => {
 
 /* HP Bar Styles */
 .hp-bar-container {
-    position: relative;
-    max-width: 100%;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
+  position: relative;
+  max-width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .hp-bar-background {
-    width: 80%;
-    height: 8px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.1);
-    margin: 0 auto; 
+  width: 80%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0 auto;
 }
 
 .hp-bar-fill {
@@ -768,26 +781,31 @@ onMounted(() => {
   transition: all 0.3s ease;
   border-radius: 4px;
   position: relative;
-  background-image: linear-gradient(45deg, 
-    rgba(255,255,255,0.1) 25%, 
-    transparent 25%, 
-    transparent 50%, 
-    rgba(255,255,255,0.1) 50%, 
-    rgba(255,255,255,0.1) 75%, 
-    transparent 75%);
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.1) 75%,
+    transparent 75%
+  );
   background-size: 8px 8px;
   animation: hp-bar-shine 2s linear infinite;
 }
 
 @keyframes hp-bar-shine {
-  0% { background-position: 0 0; }
-  100% { background-position: 16px 0; }
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 16px 0;
+  }
 }
 
 .hp-bar-labels {
   display: flex;
   font-size: 0.75rem;
-  margin-top: 2px;
 }
 
 .hp-current {
@@ -801,52 +819,50 @@ onMounted(() => {
 
 .pokemon-card:hover .hp-bar-fill {
   transform: scaleX(1.02);
-  box-shadow: 0 0 8px rgba(255,255,255,0.3);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
 /* Battle Stats Styles */
 .battle-stats {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 2rem;
 }
 
 .stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .stat-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #9ca3af;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-.stat-label-hw{
-    color: #9ca3af;
+.stat-label-hw {
+  color: #9ca3af;
 }
 
 .stat-value {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #e5e7eb;
-    background: rgba(255,255,255,0.1);
-    padding: 0.25rem 0.5rem;
-    border-radius: 12px;
-    min-width: 40px;
-    border: 1px solid rgba(255,255,255,0.2);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  min-width: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .pokemon-card:hover .stat-value {
-    background: rgba(255,255,255,0.15);
-    color: #ffffff;
-    transform: scale(1.05);
-    transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
 }
 
 /* Legacy type badge styles for backwards compatibility */
@@ -860,23 +876,23 @@ onMounted(() => {
   margin-right: 0.5rem;
   margin-bottom: 0.25rem;
   display: inline-block;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   transition: all 0.2s ease;
 }
 
 .type-badge:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.type-icon{
-    height:20px;
-    width:20px;
+.type-icon {
+  height: 20px;
+  width: 20px;
 }
 
 .type-badge:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .spinner-border {
@@ -886,55 +902,59 @@ onMounted(() => {
 .font-pokemon-hollow {
   font-family: 'Pokemon Hollow', 'Arial', sans-serif;
   letter-spacing: 0.05em;
-  color: var(--pokemon-yellow, #FFCB05);
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  color: var(--pokemon-yellow, #ffcb05);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
 
 .font-pokemon-hollow:hover {
-  color: #FFD700;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+  color: #ffd700;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .font-pokemon-solid {
-    font-family: 'Pokemon Solid', 'Arial', sans-serif;
-    letter-spacing: 0.1em;
-    transition: color 0.2s ease;
-    -webkit-text-stroke: 0.5px black; /* Add border to text for webkit browsers */
-    text-shadow: 
-        -1px -1px 0 #000,  
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        1px 1px 0 #000; /* Text border effect for all browsers */
+  font-family: 'Pokemon Solid', 'Arial', sans-serif;
+  letter-spacing: 0.1em;
+  transition: color 0.2s ease;
+  -webkit-text-stroke: 0.5px black; /* Add border to text for webkit browsers */
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000; /* Text border effect for all browsers */
 }
 
 .pokemon-card:hover .font-pokemon-solid {
-  color: #FFCB05;
+  color: #ffcb05;
   -webkit-text-stroke: 0.5px #007bff;
 }
 
 /* Add glow effect to card on hover based on primary type */
 .pokemon-card:hover {
-  box-shadow: 
-    0 15px 35px rgba(0,0,0,0.15),
-    0 5px 15px rgba(0,0,0,0.1),
-    0 0 20px var(--type-glow, rgba(0,0,0,0.1));
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.15),
+    0 5px 15px rgba(0, 0, 0, 0.1),
+    0 0 20px var(--type-glow, rgba(0, 0, 0, 0.1));
 }
 
 /* Type-specific glow effects */
-.pokemon-card[style*="borderColor: #F08030"]:hover { /* Fire */
+.pokemon-card[style*='borderColor: #F08030']:hover {
+  /* Fire */
   --type-glow: rgba(240, 128, 48, 0.3);
 }
 
-.pokemon-card[style*="borderColor: #6890F0"]:hover { /* Water */
+.pokemon-card[style*='borderColor: #6890F0']:hover {
+  /* Water */
   --type-glow: rgba(104, 144, 240, 0.3);
 }
 
-.pokemon-card[style*="borderColor: #78C850"]:hover { /* Grass */
+.pokemon-card[style*='borderColor: #78C850']:hover {
+  /* Grass */
   --type-glow: rgba(120, 200, 80, 0.3);
 }
 
-.pokemon-card[style*="borderColor: #F8D030"]:hover { /* Electric */
+.pokemon-card[style*='borderColor: #F8D030']:hover {
+  /* Electric */
   --type-glow: rgba(248, 208, 48, 0.3);
 }
 
@@ -956,9 +976,9 @@ onMounted(() => {
   height: 120px;
   background: radial-gradient(
     circle,
-    rgba(0,0,0,0.4) 0%,
-    rgba(0,0,0,0.2) 40%,
-    rgba(0,0,0,0.1) 70%,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 40%,
+    rgba(0, 0, 0, 0.1) 70%,
     transparent 100%
   );
   border-radius: 50%;
@@ -974,26 +994,30 @@ onMounted(() => {
   z-index: 2;
   max-width: 120px;
   max-height: 120px;
-  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
   transition: transform 0.3s ease;
   display: block;
   margin: 0 auto;
 }
 
 .shiny-pokemon {
-  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) hue-rotate(10deg) brightness(1.1) saturate(1.2);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.8))
+    hue-rotate(10deg) brightness(1.1) saturate(1.2);
   animation: shinyGlow 3s ease-in-out infinite alternate;
 }
 
 @keyframes shinyGlow {
   0% {
-    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.6)) hue-rotate(0deg) brightness(1.1) saturate(1.2);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.6))
+      hue-rotate(0deg) brightness(1.1) saturate(1.2);
   }
   50% {
-    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)) drop-shadow(0 0 25px rgba(255, 215, 0, 1)) hue-rotate(5deg) brightness(1.15) saturate(1.3);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 25px rgba(255, 215, 0, 1))
+      hue-rotate(5deg) brightness(1.15) saturate(1.3);
   }
   100% {
-    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.8)) hue-rotate(10deg) brightness(1.2) saturate(1.4);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.8))
+      hue-rotate(10deg) brightness(1.2) saturate(1.4);
   }
 }
 
@@ -1003,19 +1027,19 @@ onMounted(() => {
 
 .pokemon-card:hover .shiny-pokemon {
   transform: scale(1.1) translateY(-5px);
-  filter: drop-shadow(0 12px 20px rgba(0,0,0,0.6)) drop-shadow(0 0 35px rgba(255, 215, 0, 1)) hue-rotate(15deg) brightness(1.25) saturate(1.5);
+  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 35px rgba(255, 215, 0, 1))
+    hue-rotate(15deg) brightness(1.25) saturate(1.5);
 }
 
 /* Badge styling improvements */
 .badge {
-  font-weight: 600;
   font-size: 0.8rem;
 }
 
 .card-title {
   font-weight: 600;
-  color:white;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive adjustments */
@@ -1023,218 +1047,225 @@ onMounted(() => {
   .pokemon-card:hover {
     transform: translateY(-4px) scale(1.01);
   }
-  
+
   .type-badge {
     font-size: 0.7rem;
     padding: 0.3rem 0.7rem;
   }
 }
 
-.pokemon-explorer{
-    color: #FFCB05;
-    -webkit-text-stroke: 2px #007bff;
-    font-family: 'Pokemon Solid', sans-serif;
-    text-shadow: none;
-    letter-spacing: 2px;
+.pokemon-explorer {
+  color: #ffcb05;
+  -webkit-text-stroke: 2px #007bff;
+  font-family: 'Pokemon Solid', sans-serif;
+  text-shadow: none;
+  letter-spacing: 2px;
 }
 
 .pokemon-card {
-      width: 250px;
-      height: 350px;
-      perspective: 1000px;
-    }
+  width: 250px;
+  height: 350px;
+  perspective: 1000px;
+}
 
-    .card-border {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 25%, #1e40af 50%, #3730a3 75%, #1e3a8a 100%);
-      border-radius: 12px;
-      padding: 8px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    }
+.card-border {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    #1e3a8a 0%,
+    #3730a3 25%,
+    #1e40af 50%,
+    #3730a3 75%,
+    #1e3a8a 100%
+  );
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
 
-    .card-background {
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, #4338ca 0%, #3730a3 30%, #1e40af 60%, #1e3a8a 100%);
-      border-radius: 8px;
-      position: relative;
-      overflow: hidden;
-    }
+.card-background {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #4338ca 0%, #3730a3 30%, #1e40af 60%, #1e3a8a 100%);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
 
-    .pokemon-logo-top {
-      position: absolute;
-      top: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-    }
+.pokemon-logo-top {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
 
-    .pokemon-text {
-      font-family: 'Pokemon Hollow', sans-serif;
-      font-size: 48px;
-      font-weight: 900;
-      color: #fbbf24;
-      text-shadow: 
-        2px 2px 0 #1e40af,
-        -1px -1px 0 #1e40af,
-        1px -1px 0 #1e40af,
-        -1px 1px 0 #1e40af;
-      letter-spacing: 1px;
-    }
+.pokemon-text {
+  font-family: 'Pokemon Hollow', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: #fbbf24;
+  text-shadow:
+    2px 2px 0 #1e40af,
+    -1px -1px 0 #1e40af,
+    1px -1px 0 #1e40af,
+    -1px 1px 0 #1e40af;
+  letter-spacing: 1px;
+}
 
-    .pokemon-logo-bottom {
-      position: absolute;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%) rotate(180deg);
-      z-index: 10;
-    }
+.pokemon-logo-bottom {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+  z-index: 10;
+}
 
-    .pokemon-text-bottom {
-      font-family: 'Pokemon Hollow', sans-serif;
-      font-size: 48px;
-      font-weight: 900;
-      color: #fbbf24;
-      text-shadow: 
-        2px 2px 0 #1e40af,
-        -1px -1px 0 #1e40af,
-        1px -1px 0 #1e40af,
-        -1px 1px 0 #1e40af;
-      letter-spacing: 1px;
-    }
+.pokemon-text-bottom {
+  font-family: 'Pokemon Hollow', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: #fbbf24;
+  text-shadow:
+    2px 2px 0 #1e40af,
+    -1px -1px 0 #1e40af,
+    1px -1px 0 #1e40af,
+    -1px 1px 0 #1e40af;
+  letter-spacing: 1px;
+}
 
-    .pokeball-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 140px;
-      height: 140px;
-    }
+.pokeball-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 140px;
+}
 
-    .energy-swirl {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      animation: rotate 8s linear infinite;
-    }
+.energy-swirl {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: rotate 8s linear infinite;
+}
 
-    .swirl-ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-top-color: rgba(255, 255, 255, 0.8);
-      border-right-color: rgba(255, 255, 255, 0.6);
-    }
+.swirl-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: rgba(255, 255, 255, 0.8);
+  border-right-color: rgba(255, 255, 255, 0.6);
+}
 
-    .ring-1 {
-      width: 140px;
-      height: 140px;
-      top: 0;
-      left: 0;
-      animation: rotate 4s linear infinite;
-    }
+.ring-1 {
+  width: 140px;
+  height: 140px;
+  top: 0;
+  left: 0;
+  animation: rotate 4s linear infinite;
+}
 
-    .ring-2 {
-      width: 110px;
-      height: 110px;
-      top: 15px;
-      left: 15px;
-      animation: rotate 6s linear infinite reverse;
-    }
+.ring-2 {
+  width: 110px;
+  height: 110px;
+  top: 15px;
+  left: 15px;
+  animation: rotate 6s linear infinite reverse;
+}
 
-    .ring-3 {
-      width: 80px;
-      height: 80px;
-      top: 30px;
-      left: 30px;
-      animation: rotate 5s linear infinite;
-    }
+.ring-3 {
+  width: 80px;
+  height: 80px;
+  top: 30px;
+  left: 30px;
+  animation: rotate 5s linear infinite;
+}
 
-    .ring-4 {
-      width: 50px;
-      height: 50px;
-      top: 45px;
-      left: 45px;
-      animation: rotate 7s linear infinite reverse;
-    }
+.ring-4 {
+  width: 50px;
+  height: 50px;
+  top: 45px;
+  left: 45px;
+  animation: rotate 7s linear infinite reverse;
+}
 
-    .pokeball {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    }
+.pokeball {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
 
-    .pokeball-top {
-      width: 100%;
-      height: 50%;
-      background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
-    }
+.pokeball-top {
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
+}
 
-    .pokeball-bottom {
-      width: 100%;
-      height: 50%;
-      background: linear-gradient(0deg, #f3f4f6 0%, #e5e7eb 100%);
-    }
+.pokeball-bottom {
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(0deg, #f3f4f6 0%, #e5e7eb 100%);
+}
 
-    .pokeball-middle {
-      position: absolute;
-      width: 100%;
-      height: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: linear-gradient(90deg, #374151 0%, #1f2937 50%, #374151 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.pokeball-middle {
+  position: absolute;
+  width: 100%;
+  height: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, #374151 0%, #1f2937 50%, #374151 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .pokeball-center {
-      width: 20px;
-      height: 20px;
-      background: linear-gradient(45deg, #f9fafb 0%, #e5e7eb 100%);
-      border-radius: 50%;
-      border: 2px solid #374151;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.pokeball-center {
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(45deg, #f9fafb 0%, #e5e7eb 100%);
+  border-radius: 50%;
+  border: 2px solid #374151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .pokeball-inner-circle {
-      width: 8px;
-      height: 8px;
-      background: linear-gradient(45deg, #d1d5db 0%, #9ca3af 100%);
-      border-radius: 50%;
-    }
+.pokeball-inner-circle {
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(45deg, #d1d5db 0%, #9ca3af 100%);
+  border-radius: 50%;
+}
 
-    @keyframes rotate {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-    /* Add some background texture */
-    .card-background::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: 
-        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
-      pointer-events: none;
-    }
+/* Add some background texture */
+.card-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
 </style>

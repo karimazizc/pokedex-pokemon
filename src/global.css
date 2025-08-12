@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Pokemon Font Imports */
 @font-face {
@@ -26,16 +26,17 @@
   font-family: 'Pokemon Solid', 'Arial', sans-serif;
 }
 
-
 /* Global Pokemon Theme Styles */
 :root {
-  --pokemon-yellow: #FFCB05;
-  --pokemon-blue: #3B82F6;
-  --pokemon-red: #EF4444;
+  --pokemon-yellow: #ffcb05;
+  --pokemon-blue: #3b82f6;
+  --pokemon-red: #ef4444;
 }
 
 /* Apply Pokemon font to headings by default */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: 'Pokemon Hollow', 'Arial', sans-serif;
   letter-spacing: 0.05em;
 }
