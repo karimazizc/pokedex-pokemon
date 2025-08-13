@@ -18,7 +18,6 @@ A comprehensive Pokemon application built with Vue 3, featuring interactive Poke
 - **Vite** - Fast build tool and development server
 - **Pinia** - State management for Vue
 - **Vue Router** - Client-side routing
-- **Tailwind CSS** - Utility-first CSS framework
 - **Bootstrap** - Component styling framework
 - **PokeAPI** - Pokemon data source
 
@@ -36,7 +35,7 @@ Before running this application, make sure you have the following installed:
 ### 1. Clone the Repository
 
 ```sh
-git clone <your-repository-url>
+git clone https://github.com/karimazizc/pokedex-pokemon.git
 cd pokedex-pokemon
 ```
 

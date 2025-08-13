@@ -1,15 +1,16 @@
 <template>
-  <div class="pokemon-detail-container bg-gray-900 min-h-screen py-4">
+  <link rel="stylesheet" href="/pokedex-pokemon/src/css/PokemonDetail.css">
+  <div class="pokemon-detail-container min-h-screen py-4" style="background-color: #111827;">
     <div class="container-fluid px-4">
       <!-- Loading State -->
-      <div v-if="loading" class="flex justify-center items-center h-64">
+      <div v-if="loading" class="d-flex justify-content-center align-items-center" style="height: 16rem;">
         <div class="text-center">
-          <h1 class="pokemon-font text-4xl">Loading Pokemon Details...</h1>
+          <h1 class="pokemon-font display-4">Loading Pokemon Details...</h1>
         </div>
       </div>
 
       <!-- Error State -->
-      <div v-if="error" class="flex justify-center">
+      <div v-if="error" class="d-flex justify-content-center">
         <div class="col-md-8">
           <div class="alert alert-danger" role="alert">
             <h4 class="alert-heading">Error!</h4>
@@ -23,10 +24,10 @@
       <div v-if="pokemonDetail && !loading && !error">
         <!-- Header with Back Button -->
         <div class="mb-4">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-            <button @click="goBack" class="btn btn-outline-light text-white flex flex-row gap-2">
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
+            <button @click="goBack" class="btn text-white d-flex align-items-center gap-2">
               <svg
-                class="mt-1"
+                style="margin-top: 0.25rem;"
                 width="16"
                 height="16"
                 viewBox="0 0 15 15"
@@ -44,10 +45,10 @@
             </button>
             <button
               @click="openEditModal"
-              class="btn btn-primary text-white flex flex-row gap-2 w-full sm:w-auto"
+              class="btn btn-primary text-white d-flex align-items-center gap-2 w-sm-auto"
             >
               <svg
-                class="mt-1"
+                style="margin-top: 0.25rem;"
                 width="16"
                 height="16"
                 viewBox="0 0 15 15"
@@ -66,31 +67,32 @@
           </div>
         </div>
 
-        <!-- Three Column Layout -->
-        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-4 max-h-[150vh]">
+        <!-- Three Column CSS Grid Layout -->
+        <div class="pokemon-grid-layout">
           <!-- Left Column - Pokemon Image -->
-          <div class="col-span-1 md:col-span-8 lg:col-span-3">
+          <div class="pokemon-card-section">
             <div
-              class="pokemon-image-card bg-gray-800 rounded-xl p-4 h-full"
+              class="pokemon-image-card rounded-4 p-4 h-100"
+              style="background-color: #1f2937;"
               :style="{
                 borderColor: getTypeColor(pokemonDetail.types[0]),
                 borderWidth: '3px',
                 borderStyle: 'solid',
               }"
             >
-              <div class="text-center h-full flex flex-col justify-between">
+              <div class="text-center h-100 d-flex flex-column justify-content-between">
                 <div>
-                  <h1 class="pokemon-font text-white mb-2 capitalize text-2xl">
+                  <h1 class="pokemon-font mb-2 text-capitalize h2">
                     {{ pokemonStore.getPokemonById(pokemonId)?.name || pokemonDetail.name }}
                   </h1>
-                  <p class="text-gray-400 mb-3">#{{ String(pokemonDetail.id).padStart(3, '0') }}</p>
+                  <p class="mb-3" style="color: #9ca3af;">#{{ String(pokemonDetail.id).padStart(3, '0') }}</p>
 
                   <!-- Type Badges -->
                   <div class="type-badges mb-4">
                     <span
                       v-for="type in pokemonDetail.types"
                       :key="type"
-                      class="type-badge me-1 mb-2 sm:me-2"
+                      class="type-badge me-1 mb-2 me-sm-2"
                       :style="{
                         backgroundColor: getTypeColor(type),
                         color: getTypeTextColor(type),
@@ -103,9 +105,7 @@
                 </div>
 
                 <!-- Pokemon Image with Shiny Toggle -->
-                <div
-                  class="pokemon-image-container position-relative flex-grow flex items-center justify-center"
-                >
+                <div class="pokemon-image-container position-relative flex-grow-1 d-flex align-items-center justify-content-center">
                   <div class="pokemon-image-wrapper-compact">
                     <img
                       :src="showShiny ? pokemonDetail.sprites.shiny : pokemonDetail.sprites.normal"
@@ -119,31 +119,31 @@
                 </div>
 
                 <div class="shiny-indicator mt-2">
-                  <small class="text-gray-400">{{ showShiny ? '✨ Shiny' : 'Normal' }}</small>
+                  <small style="color: #9ca3af;">{{ showShiny ? '✨ Shiny' : 'Normal' }}</small>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Middle Column - Basic Info + Stats -->
-          <div class="col-span-1 md:col-span-8 lg:col-span-5 flex flex-col gap-4">
+          <div class="basic-info-section d-flex flex-column gap-4">
             <!-- Basic Info -->
-            <div class="bg-gray-800 rounded-xl p-4 flex-shrink-0">
-              <h3 class="text-white pokemon-font mb-3 text-lg">Basic Information</h3>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <div class="info-item-compact mb-2">
-                    <label class="text-gray-400 text-sm">Height</label>
-                    <p class="text-white font-weight-bold">
+            <div class="rounded-4 p-4" style="background-color: #1f2937; flex-shrink: 0;">
+              <h3 class="pokemon-font">Basic Information</h3>
+              <div class="row g-4">
+                <div class="col-sm-6">
+                  <div class="info-item-compact">
+                    <label class="text-sm" style="color: #9ca3af;">Height</label>
+                    <p class="text-white fw-bold">
                       {{
                         pokemonStore.getPokemonById(pokemonId)?.height ||
                         formatHeight(pokemonDetail.height)
                       }}
                     </p>
                   </div>
-                  <div class="info-item-compact mb-2">
-                    <label class="text-gray-400 text-sm">Weight</label>
-                    <p class="text-white font-weight-bold">
+                  <div class="info-item-compact">
+                    <label class="text-sm" style="color: #9ca3af;">Weight</label>
+                    <p class="text-white fw-bold">
                       {{
                         pokemonStore.getPokemonById(pokemonId)?.weight ||
                         formatWeight(pokemonDetail.weight)
@@ -151,16 +151,16 @@
                     </p>
                   </div>
                 </div>
-                <div>
-                  <div class="info-item-compact mb-2">
-                    <label class="text-gray-400 text-sm">Base Experience</label>
-                    <p class="text-white font-weight-bold text-sm">
+                <div class="col-sm-6">
+                  <div class="info-item-compact">
+                    <label class="text-sm" style="color: #9ca3af;">Base Experience</label>
+                    <p class="text-white fw-bold small">
                       {{ pokemonDetail.baseExperience || 'Unknown' }}
                     </p>
                   </div>
                   <div class="info-item-compact mb-2">
-                    <label class="text-gray-400 text-sm">Capture Rate</label>
-                    <p class="text-white font-weight-bold text-sm">
+                    <label class="text-sm" style="color: #9ca3af;">Capture Rate</label>
+                    <p class="text-white fw-bold small">
                       {{ pokemonDetail.captureRate || 'Unknown' }} %
                     </p>
                   </div>
@@ -168,73 +168,76 @@
               </div>
 
               <!-- Abilities and Sprite Angles -->
-              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-3">
+              <div class="row g-4">
                 <!-- Abilities -->
-                <div class="info-item-compact">
-                  <label class="text-gray-400 text-sm">Abilities</label>
-                  <div class="abilities-list flex flex-wrap gap-2 mt-1">
-                    <span
-                      v-for="ability in pokemonDetail.abilities"
-                      :key="ability.name"
-                      class="ability-badge-compact"
-                      :class="{ 'hidden-ability': ability.is_hidden }"
-                    >
-                      {{ ability.name.replace('-', ' ').replace(/\b\w/g, (l) => l.toUpperCase()) }}
-                      {{ ability.is_hidden ? '(Hidden)' : '' }}
-                    </span>
+                <div class="col-lg-6">
+                  <div class="info-item-compact">
+                    <label class="text-sm" style="color: #9ca3af;">Abilities</label>
+                    <div class="abilities-list d-flex flex-wrap gap-2 mt-1">
+                      <span
+                        v-for="ability in pokemonDetail.abilities"
+                        :key="ability.name"
+                        class="ability-badge-compact"
+                        :class="{ 'hidden-ability': ability.is_hidden }"
+                      >
+                        {{ ability.name.replace('-', ' ').replace(/\b\w/g, (l) => l.toUpperCase()) }}
+                        {{ ability.is_hidden ? '(Hidden)' : '' }}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 <!-- Sprite Angles -->
-                <div class="info-item-compact">
-                  <label class="text-gray-400 text-sm">Sprite</label>
-                  <div class="sprite-angles-grid mt-1">
-                    <img
-                      v-if="pokemonDetail.sprites?.front_normal"
-                      :src="pokemonDetail.sprites.front_normal"
-                      :alt="pokemonDetail.name + ' front'"
-                      class="sprite-angle-image"
-                      @error="handleImageError"
-                    />
+                <div class="col-lg-6">
+                  <div class="info-item-compact">
+                    <label class="text-sm" style="color: #9ca3af;">Sprite</label>
+                    <div class="sprite-angles-grid mt-1">
+                      <img
+                        v-if="pokemonDetail.sprites?.front_normal"
+                        :src="pokemonDetail.sprites.front_normal"
+                        :alt="pokemonDetail.name + ' front'"
+                        class="sprite-angle-image"
+                        @error="handleImageError"
+                      />
 
-                    <img
-                      v-if="pokemonDetail.sprites?.back_normal"
-                      :src="pokemonDetail.sprites.back_normal"
-                      :alt="pokemonDetail.name + ' back'"
-                      class="sprite-angle-image"
-                      @error="handleImageError"
-                    />
+                      <img
+                        v-if="pokemonDetail.sprites?.back_normal"
+                        :src="pokemonDetail.sprites.back_normal"
+                        :alt="pokemonDetail.name + ' back'"
+                        class="sprite-angle-image"
+                        @error="handleImageError"
+                      />
 
-                    <img
-                      v-if="pokemonDetail.sprites?.front_shiny"
-                      :src="pokemonDetail.sprites.front_shiny"
-                      :alt="pokemonDetail.name + ' front shiny'"
-                      class="sprite-angle-image"
-                      @error="handleImageError"
-                    />
+                      <img
+                        v-if="pokemonDetail.sprites?.front_shiny"
+                        :src="pokemonDetail.sprites.front_shiny"
+                        :alt="pokemonDetail.name + ' front shiny'"
+                        class="sprite-angle-image"
+                        @error="handleImageError"
+                      />
 
-                    <img
-                      v-if="pokemonDetail.sprites?.back_shiny"
-                      :src="pokemonDetail.sprites.back_shiny"
-                      :alt="pokemonDetail.name + ' back shiny'"
-                      class="sprite-angle-image"
-                      @error="handleImageError"
-                    />
+                      <img
+                        v-if="pokemonDetail.sprites?.back_shiny"
+                        :src="pokemonDetail.sprites.back_shiny"
+                        :alt="pokemonDetail.name + ' back shiny'"
+                        class="sprite-angle-image"
+                        @error="handleImageError"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Detailed Stats -->
-            <div class="bg-gray-800 rounded-xl p-4 flex-1">
-              <h3 class="text-white pokemon-font mb-3 text-lg">Battle Statistics</h3>
+            <div class="rounded-4 p-4 flex-fill" style="background-color: #1f2937;">
+              <h3 class="pokemon-font mb-3 h5">Battle Statistics</h3>
 
               <!-- HP -->
               <div class="stat-row-compact mb-2">
                 <div class="stat-info-compact">
                   <span class="stat-name">HP</span>
-
-                  <span class="stat-value text-green-400">{{
+                  <span class="stat-value" style="color: #4ade80;">{{
                     pokemonStore.getPokemonById(pokemonId)?.stats?.hp || pokemonDetail.stats.hp
                   }}</span>
                 </div>
@@ -255,7 +258,7 @@
               <div class="stat-row-compact mb-2">
                 <div class="stat-info-compact">
                   <span class="stat-name">Attack</span>
-                  <span class="stat-value text-red-400">{{
+                  <span class="stat-value" style="color: #f87171;">{{
                     pokemonStore.getPokemonById(pokemonId)?.stats?.attack ||
                     pokemonDetail.stats.attack
                   }}</span>
@@ -279,7 +282,7 @@
               <div class="stat-row-compact mb-2">
                 <div class="stat-info-compact">
                   <span class="stat-name">Defense</span>
-                  <span class="stat-value text-blue-400">{{
+                  <span class="stat-value" style="color: #60a5fa;">{{
                     pokemonStore.getPokemonById(pokemonId)?.stats?.defense ||
                     pokemonDetail.stats.defense
                   }}</span>
@@ -303,7 +306,7 @@
               <div class="stat-row-compact mb-2">
                 <div class="stat-info-compact">
                   <span class="stat-name">Sp. Attack</span>
-                  <span class="stat-value text-purple-400">{{
+                  <span class="stat-value" style="color: #c084fc;">{{
                     pokemonStore.getPokemonById(pokemonId)?.stats?.specialAttack ||
                     pokemonDetail.stats.specialAttack
                   }}</span>
@@ -327,7 +330,7 @@
               <div class="stat-row-compact mb-2">
                 <div class="stat-info-compact">
                   <span class="stat-name">Sp. Defense</span>
-                  <span class="stat-value text-indigo-400">{{
+                  <span class="stat-value" style="color: #818cf8;">{{
                     pokemonStore.getPokemonById(pokemonId)?.stats?.specialDefense ||
                     pokemonDetail.stats.specialDefense
                   }}</span>
@@ -351,7 +354,7 @@
               <div class="stat-row-compact mb-3">
                 <div class="stat-info-compact">
                   <span class="stat-name">Speed</span>
-                  <span class="stat-value text-yellow-400">{{
+                  <span class="stat-value" style="color: #facc15;">{{
                     pokemonStore.getPokemonById(pokemonId)?.stats?.speed ||
                     pokemonDetail.stats.speed
                   }}</span>
@@ -372,36 +375,36 @@
               </div>
 
               <!-- Total Stats -->
-              <div class="stat-total-compact pt-2 border-t border-gray-600">
+              <div class="stat-total-compact pt-2" style="border-top: 1px solid #374151;">
                 <div class="stat-info-compact">
-                  <span class="stat-name font-weight-bold">Total</span>
-                  <span class="stat-value text-white font-weight-bold">{{ getTotalStats() }}</span>
+                  <span class="stat-name fw-bold">Total</span>
+                  <span class="stat-value text-white fw-bold">{{ getTotalStats() }}</span>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Right Column - Moves -->
-          <div class="col-span-1 md:col-span-8 lg:col-span-4">
-            <div class="bg-gray-800 rounded-xl p-4 h-full flex flex-col">
-              <h3 class="text-white pokemon-font mb-3 text-lg">Moves & Abilities</h3>
+          <div class="moves-section">
+            <div class="rounded-4 p-4 h-100 d-flex flex-column" style="background-color: #1f2937;">
+              <h3 class="pokemon-font ">Moves & Abilities</h3>
 
               <!-- Move Filter Tabs -->
-              <div class="move-filter-tabs-compact mb-3 flex-shrink-0">
+              <div class="move-filter-tabs-compact mb-3 d-flex flex-wrap gap-1" style="flex-shrink: 0;">
                 <button
                   v-for="method in moveLearnMethods"
                   :key="method"
                   @click="selectedMoveMethod = method"
-                  class="btn move-filter-btn-compact me-1 mb-1"
+                  class="move-filter-btn-compact me-1 mb-1"
                   :class="{ active: selectedMoveMethod === method }"
                 >
                   {{ formatMoveMethod(method) }}
-                  <span class="badge bg-secondary ms-1 text-xs">{{ getMovesCount(method) }}</span>
+                  <span class="badge bg-secondary ms-1" style="font-size: 0.75rem;">{{ getMovesCount(method) }}</span>
                 </button>
               </div>
 
               <!-- Moves Grid -->
-              <div class="moves-grid-compact flex-1">
+              <div class="moves-grid-compact flex-fill">
                 <div
                   v-for="move in filteredMoves"
                   :key="move.name + move.level"
@@ -413,7 +416,7 @@
                     <h5 class="move-name-compact">{{ formatMoveName(move.name) }}</h5>
                     <div class="type-badges">
                       <span
-                        class="type-badge me-2 mb-2 text-white tex"
+                        class="type-badge me-2 mb-2 text-white"
                         :style="{ backgroundColor: getTypeColor(move.type) }"
                       >
                         <img
@@ -438,10 +441,10 @@
                     }}</span>
                   </div>
                   <div class="move-stats-compact" v-if="move.power || move.accuracy">
-                    <span v-if="move.power" class="text-red-400 text-xs"
+                    <span v-if="move.power" class="text-danger small"
                       >PWR: {{ move.power }}</span
                     >
-                    <span v-if="move.accuracy" class="text-blue-400 text-xs"
+                    <span v-if="move.accuracy" class="text-info small"
                       >ACC: {{ move.accuracy }}%</span
                     >
                   </div>
@@ -451,25 +454,26 @@
               <!-- Move Details Modal -->
               <div
                 v-if="selectedMove"
-                class="move-details-panel-compact mt-3 p-2 bg-gray-700 rounded flex-shrink-0"
+                class="move-details-panel-compact mt-3 p-2 rounded" 
+                style="background-color: #374151; flex-shrink: 0;"
               >
-                <h4 class="text-white text-sm font-bold">
+                <h4 class="text-white small fw-bold">
                   {{ formatMoveName(selectedMove.name) }}
                 </h4>
-                <p class="text-gray-300 text-xs mt-1 max-h-full" v-if="selectedMove.description">
+                <p class="small mt-1" style="color: #d1d5db; max-height: 100%;" v-if="selectedMove.description">
                   {{ selectedMove.description }}
                 </p>
                 <div class="move-info-grid-compact mt-2">
-                  <div v-if="selectedMove.power" class="text-xs">
+                  <div v-if="selectedMove.power" class="small">
                     <strong>PWR:</strong> {{ selectedMove.power }}
                   </div>
-                  <div v-if="selectedMove.accuracy" class="text-xs">
+                  <div v-if="selectedMove.accuracy" class="small">
                     <strong>ACC:</strong> {{ selectedMove.accuracy }}%
                   </div>
-                  <div v-if="selectedMove.pp" class="text-xs">
+                  <div v-if="selectedMove.pp" class="small">
                     <strong>PP:</strong> {{ selectedMove.pp }}
                   </div>
-                  <div class="text-xs"><strong>Type:</strong> {{ selectedMove.type }}</div>
+                  <div class="small"><strong>Type:</strong> {{ selectedMove.type }}</div>
                 </div>
               </div>
             </div>
@@ -481,19 +485,19 @@
       <div v-if="showEditModal" class="modal-overlay" @click.self="closeEditModal">
         <div class="edit-modal">
           <div class="modal-header">
-            <h3 class="text-white pokemon-font">Edit {{ pokemonDetail.name }}</h3>
+            <h3 class="pokemon-font">Edit {{ pokemonDetail.name }}</h3>
             <button @click="closeEditModal" class="close-btn">&times;</button>
           </div>
 
           <form @submit.prevent="submitEdit" class="edit-form">
             <div class="form-row">
               <div class="form-group">
-                <label class="text-gray-300">Name</label>
+                <label style="color: #d1d5db;">Name</label>
                 <input v-model="editStore.form.name" type="text" class="form-input" required />
               </div>
 
               <div class="form-group">
-                <label class="text-gray-300">Height (decimeters)</label>
+                <label style="color: #d1d5db;">Height (decimeters)</label>
                 <input
                   v-model.number="editStore.form.height"
                   type="number"
@@ -507,7 +511,7 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label class="text-gray-300">Weight (hectograms)</label>
+                <label style="color: #d1d5db;">Weight (hectograms)</label>
                 <input
                   v-model.number="editStore.form.weight"
                   type="number"
@@ -519,7 +523,7 @@
               </div>
 
               <div class="form-group">
-                <label class="text-gray-300">Base Experience</label>
+                <label style="color: #d1d5db;">Base Experience</label>
                 <input
                   v-model.number="editStore.form.baseExperience"
                   type="number"
@@ -532,10 +536,10 @@
             </div>
 
             <div class="stats-section">
-              <p class="text-gray-300 mb-3 uppercase">Base Stats</p>
+              <p style="color: #d1d5db;" class="mb-3 text-uppercase">Base Stats</p>
               <div class="stats-grid">
                 <div class="form-group">
-                  <label class="text-gray-300">HP</label>
+                  <label style="color: #d1d5db;">HP</label>
                   <input
                     v-model.number="editStore.form.stats.hp"
                     type="number"
@@ -547,7 +551,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="text-gray-300">Attack</label>
+                  <label style="color: #d1d5db;">Attack</label>
                   <input
                     v-model.number="editStore.form.stats.attack"
                     type="number"
@@ -559,7 +563,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="text-gray-300">Defense</label>
+                  <label style="color: #d1d5db;">Defense</label>
                   <input
                     v-model.number="editStore.form.stats.defense"
                     type="number"
@@ -571,7 +575,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="text-gray-300">Sp. Attack</label>
+                  <label style="color: #d1d5db;">Sp. Attack</label>
                   <input
                     v-model.number="editStore.form.stats.specialAttack"
                     type="number"
@@ -583,7 +587,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="text-gray-300">Sp. Defense</label>
+                  <label style="color: #d1d5db;">Sp. Defense</label>
                   <input
                     v-model.number="editStore.form.stats.specialDefense"
                     type="number"
@@ -595,7 +599,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="text-gray-300">Speed</label>
+                  <label style="color: #d1d5db;">Speed</label>
                   <input
                     v-model.number="editStore.form.stats.speed"
                     type="number"
@@ -621,10 +625,6 @@
   </div>
 </template>
 
-/** * PokemonDetail Component * * Detailed view component for displaying comprehensive Pokemon
-information * Features: * - Pokemon stats and information display * - Move learning methods and
-moves list * - Sprite angles (front, back, shiny) display * - Edit functionality with modal * -
-Type-based styling * - Comprehensive error handling */
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -1032,6 +1032,14 @@ const handleImageError = (event) => {
   event.target.src = 'https://via.placeholder.com/300x300?text=No+Image'
 }
 
+/**
+ * Handles icon loading errors
+ * @param {Event} event - Error event
+ */
+const handleIconError = (event) => {
+  event.target.style.display = 'none'
+}
+
 // Lifecycle
 onMounted(() => {
   fetchPokemonDetails()
@@ -1047,729 +1055,3 @@ watch(
 )
 </script>
 
-<style scoped>
-/* Pokemon Detail Specific Styles */
-.pokemon-detail-container {
-  min-height: 100vh;
-}
-
-/* Responsive container padding */
-.container-fluid {
-  transition: all 0.3s ease;
-}
-
-/* Responsive image sizing */
-.pokemon-image-wrapper-compact {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.pokemon-image-wrapper-compact::before {
-  content: '';
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(
-    circle,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.1) 40%,
-    transparent 70%
-  );
-  border-radius: 50%;
-  z-index: 1;
-  transition: all 0.3s ease;
-}
-
-.pokemon-image-compact {
-  position: relative;
-  z-index: 2;
-  max-width: 180px;
-  max-height: 180px;
-  filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.5));
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.pokemon-image-compact:hover {
-  transform: scale(1.05);
-  filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.7));
-}
-
-/* Sprite Angles Styles */
-.sprite-angles-grid {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.sprite-angle-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: rgba(75, 85, 99, 0.3);
-  border: 1px solid rgba(75, 85, 99, 0.6);
-  border-radius: 8px;
-  padding: 0.5rem;
-  transition: all 0.2s ease;
-}
-
-.sprite-angle-item:hover {
-  background: rgba(75, 85, 99, 0.5);
-  border-color: #3b82f6;
-  transform: translateY(-2px);
-}
-
-.sprite-angle-label {
-  color: #d1d5db;
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 0.25rem;
-  text-align: center;
-}
-
-.sprite-angle-image {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  transform: scale(1.2);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-  transition: transform 0.2s ease;
-}
-
-.sprite-angle-item:hover .sprite-angle-image {
-  transform: scale(1.1);
-}
-
-/* Compact Info Styles */
-.info-item-compact {
-  margin-bottom: 0.5rem;
-}
-
-.info-item-compact label {
-  display: block;
-  font-size: 0.75rem;
-  margin-bottom: 0.15rem;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.info-item-compact p {
-  margin: 0;
-  font-size: 0.95rem;
-}
-
-.ability-badge-compact {
-  background: rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border: 1px solid rgba(59, 130, 246, 0.3);
-}
-
-.ability-badge-compact.hidden-ability {
-  background: rgba(147, 51, 234, 0.2);
-  color: #a855f7;
-  border-color: rgba(147, 51, 234, 0.3);
-}
-
-/* Compact Stats Styles */
-.stat-row-compact {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.stat-info-compact {
-  display: flex;
-  justify-content: space-between;
-  width: 120px;
-  font-weight: 600;
-}
-
-.stat-bar-container-compact {
-  flex: 1;
-  height: 8px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  margin-left: 0.75rem;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.stat-bar-compact {
-  height: 100%;
-  border-radius: 4px;
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  background-image: linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.1) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0.1) 75%,
-    transparent 75%
-  );
-  background-size: 6px 6px;
-  animation: stat-bar-shine 2s linear infinite;
-}
-
-.stat-total-compact {
-  border-top: 1px solid #374151;
-}
-
-/* Compact Moves Styles */
-.move-filter-tabs-compact {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-}
-
-.move-filter-btn-compact {
-  background: rgba(75, 85, 99, 0.5);
-  border: 1px solid rgba(75, 85, 99, 0.8);
-  color: #d1d5db;
-  transition: all 0.2s ease;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  border-radius: 4px;
-}
-
-.move-filter-btn-compact.active,
-.move-filter-btn-compact:hover {
-  background: rgba(59, 130, 246, 0.2);
-  border-color: #3b82f6;
-  color: #60a5fa;
-}
-
-.moves-grid-compact {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  overflow-y: auto;
-  max-height: calc(100vh - 400px);
-  padding-right: 0.25rem;
-}
-
-/* Responsive moves grid height */
-@media (max-width: 768px) {
-  .moves-grid-compact {
-    max-height: 250px;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .moves-grid-compact {
-    max-height: 350px;
-  }
-}
-
-.moves-grid-compact::-webkit-scrollbar {
-  width: 4px;
-}
-
-.moves-grid-compact::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 2px;
-}
-
-.moves-grid-compact::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-}
-
-.moves-grid-compact::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.move-card-compact {
-  background: rgba(75, 85, 99, 0.3);
-  border: 1px solid rgba(75, 85, 99, 0.6);
-  border-radius: 6px;
-  padding: 0.75rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.move-card-compact:hover,
-.move-card-compact.selected {
-  background: rgba(75, 85, 99, 0.5);
-  border-color: #3b82f6;
-  transform: translateX(2px);
-}
-
-.move-header-compact {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  margin-bottom: 0.5rem;
-}
-
-.move-name-compact {
-  color: white;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin: 0;
-  flex: 1;
-  line-height: 1.2;
-}
-
-.move-type-badge-compact {
-  padding: 0.15rem 0.4rem;
-  border-radius: 8px;
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: white;
-  text-transform: capitalize;
-  margin-left: 0.5rem;
-  min-width: 45px;
-  text-align: center;
-}
-
-.move-details-compact {
-  margin-bottom: 0.25rem;
-}
-
-.move-level-compact,
-.move-method-compact {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 0.15rem 0.4rem;
-  border-radius: 8px;
-  font-size: 0.65rem;
-  color: #d1d5db;
-  font-weight: 600;
-}
-
-.move-stats-compact {
-  display: flex;
-  gap: 0.5rem;
-  font-weight: 600;
-}
-
-.move-details-panel-compact {
-  border: 2px solid #3b82f6;
-  border-radius: 6px;
-  max-height: 120px;
-  overflow-y: auto;
-}
-
-.move-info-grid-compact {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.25rem;
-  color: #d1d5db;
-}
-
-/* Original styles for fallback */
-.pokemon-image-card {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.pokemon-image-card:hover {
-  transform: translateY(-5px);
-}
-
-/* Type and Badge Styles */
-.shiny-indicator {
-  text-align: center;
-}
-
-.type-badges {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-}
-
-.type-badge {
-  padding: 0.35rem 0.7rem;
-  border-radius: 20px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease;
-  font-size: 0.8rem;
-}
-
-.type-badge:hover {
-  transform: translateY(-1px);
-}
-
-.type-icon {
-  width: 14px;
-  height: 14px;
-}
-
-/* Stat Name Styling */
-.stat-name {
-  color: #d1d5db;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-}
-
-.stat-value {
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  /* Mobile styles */
-  .pokemon-detail-container {
-    padding: 1rem 0;
-  }
-
-  .container-fluid {
-    padding: 0 1rem;
-  }
-
-  .pokemon-image-wrapper-compact {
-    width: 150px;
-    height: 150px;
-  }
-
-  .pokemon-image-wrapper-compact::before {
-    width: 130px;
-    height: 130px;
-  }
-
-  .pokemon-image-compact {
-    max-width: 130px;
-    max-height: 130px;
-  }
-
-  .pokemon-font {
-    font-size: 18px;
-    letter-spacing: 1px;
-  }
-
-  .type-badge {
-    font-size: 0.7rem;
-    padding: 0.25rem 0.5rem;
-  }
-
-  .type-icon {
-    width: 12px;
-    height: 12px;
-  }
-
-  .stat-info-compact {
-    width: 100px;
-    font-size: 0.8rem;
-  }
-
-  .stat-bar-container-compact {
-    margin-left: 0.5rem;
-  }
-
-  .moves-grid-compact {
-    max-height: 300px;
-  }
-
-  .move-card-compact {
-    padding: 0.5rem;
-  }
-
-  .move-name-compact {
-    font-size: 0.8rem;
-  }
-
-  .move-filter-btn-compact {
-    padding: 0.2rem 0.4rem;
-    font-size: 0.65rem;
-  }
-
-  .move-details-panel-compact {
-    max-height: 100px;
-  }
-
-  .btn {
-    padding: 0.6rem 1rem;
-    font-size: 0.8rem;
-  }
-
-  /* Modal responsive styles */
-  .edit-modal {
-    margin: 0.5rem;
-    width: calc(100% - 1rem);
-    max-height: 95vh;
-  }
-
-  /* Sprite angles responsive */
-  .sprite-angles-grid {
-    justify-content: center;
-  }
-
-  .sprite-angle-item {
-    padding: 0.25rem;
-  }
-
-  .sprite-angle-image {
-    width: 40px;
-    height: 40px;
-  }
-
-  .modal-header {
-    padding: 1rem;
-  }
-
-  .modal-header h3 {
-    font-size: 1.2rem;
-  }
-
-  .edit-form {
-    padding: 1rem;
-  }
-
-  .form-row,
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  .modal-actions {
-    flex-direction: column-reverse;
-    gap: 0.75rem;
-  }
-
-  .modal-actions .btn {
-    width: 100%;
-  }
-}
-
-/* Tablet styles */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .pokemon-image-wrapper-compact {
-    width: 180px;
-    height: 180px;
-  }
-
-  .pokemon-image-wrapper-compact::before {
-    width: 160px;
-    height: 160px;
-  }
-
-  .pokemon-image-compact {
-    max-width: 160px;
-    max-height: 160px;
-  }
-
-  .pokemon-font {
-    font-size: 20px;
-  }
-
-  .moves-grid-compact {
-    max-height: calc(100vh - 350px);
-  }
-
-  .edit-modal {
-    max-width: 500px;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Large desktop styles */
-@media (min-width: 1025px) {
-  .pokemon-detail-container {
-    padding: 2rem 0;
-  }
-
-  .container-fluid {
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .moves-grid-compact {
-    max-height: calc(100vh - 400px);
-  }
-}
-.pokemon-font {
-  color: #ffcb05;
-  -webkit-text-stroke: 1.5px #007bff;
-  font-family: 'Pokemon Solid', sans-serif;
-  text-shadow: none;
-  letter-spacing: 2px;
-  font-size: 22px;
-}
-
-/* Edit Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  backdrop-filter: blur(5px);
-}
-
-.edit-modal {
-  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-  border-radius: 12px;
-  padding: 0;
-  max-width: 600px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-  border: 2px solid #3b82f6;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem;
-  border-bottom: 1px solid #374151;
-}
-
-.modal-header h3 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  color: #9ca3af;
-  font-size: 2rem;
-  cursor: pointer;
-  line-height: 1;
-  transition: color 0.2s ease;
-}
-
-.close-btn:hover {
-  color: #ef4444;
-}
-
-.edit-form {
-  padding: 1.5rem;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-}
-
-.form-input {
-  background: rgba(75, 85, 99, 0.5);
-  border: 1px solid #4b5563;
-  border-radius: 6px;
-  padding: 0.75rem;
-  color: white;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  background: rgba(75, 85, 99, 0.7);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.stats-section {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.stats-section h4 {
-  color: #ffcb05;
-  -webkit-text-stroke: 1px #007bff;
-  margin-bottom: 1rem;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #374151;
-}
-
-.btn {
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  border: none;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  color: white;
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.btn-secondary {
-  background: rgba(75, 85, 99, 0.5);
-  color: #d1d5db;
-  border: 1px solid #4b5563;
-}
-
-.btn-secondary:hover {
-  background: rgba(75, 85, 99, 0.7);
-  border-color: #6b7280;
-}
-
-@media (max-width: 768px) {
-  .form-row,
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .modal-actions {
-    flex-direction: column-reverse;
-  }
-
-  .edit-modal {
-    margin: 1rem;
-    width: calc(100% - 2rem);
-  }
-}
-</style>
