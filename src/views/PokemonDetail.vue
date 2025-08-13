@@ -1,5 +1,5 @@
 <template>
-  <link rel="stylesheet" href="/pokedex-pokemon/src/css/PokemonDetail.css">
+  <link rel="stylesheet" href="../PokemonDetail.css">
   <div class="pokemon-detail-container min-h-screen py-4" style="background-color: #111827;">
     <div class="container-fluid px-4">
       <!-- Loading State -->
@@ -399,7 +399,7 @@
                   :class="{ active: selectedMoveMethod === method }"
                 >
                   {{ formatMoveMethod(method) }}
-                  <span class="badge bg-secondary ms-1" style="font-size: 0.75rem;">{{ getMovesCount(method) }}</span>
+                  <span class=" badge bg-secondary" style="font-size: 0.6rem;">{{ getMovesCount(method) }}</span>
                 </button>
               </div>
 

@@ -1,5 +1,5 @@
 <template>
-  <link rel="stylesheet" href="/pokedex-pokemon/src/css/HomeView.css">
+  <link rel="stylesheet" href="../HomeView.css">
   <div class="container-fluid py-4 background-gray">
     <!-- Search Section -->
     <div class="row justify-content-center mb-5">
