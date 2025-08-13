@@ -1137,7 +1137,6 @@ onMounted(() => {
   transform: translateX(-50%);
   z-index: 10;
 }
-
 .pokemon-text {
   font-family: 'Pokemon Hollow', sans-serif;
   font-size: 48px;
